@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/spadonienzo/emaily/issues"
   },
-  "homepage": "https://github.com/spadonienzo/emaily#readme"
+  "homepage": "https://github.com/spadonienzo/emaily#readme",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
 }
