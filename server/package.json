@@ -12,6 +12,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@stripe/stripe-js": "^7.4.0",
+    "body-parser": "^2.2.0",
     "concurrently": "^9.2.0",
     "cookie-session": "^2.1.0",
     "dotenv": "^16.4.7",
@@ -19,6 +21,7 @@
     "mongoose": "^8.5.2",
     "nodemon": "^3.1.9",
     "passport": "^0.5.3",
-    "passport-google-oauth20": "^2.0.0"
+    "passport-google-oauth20": "^2.0.0",
+    "stripe": "^18.3.0"
   }
 }

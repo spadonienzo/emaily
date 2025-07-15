@@ -1,5 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import Payments from "./Payments";
 
 const Header = () => {
   const auth = useSelector((state) => state.auth);
@@ -15,20 +17,26 @@ const Header = () => {
           </li>
         );
       default:
-        return (
-          <li>
+        return [
+          <li key="1">
+            <Payments />
+          </li>,
+          <li key="2" style={{ margin: "0 10px" }}>
+            Credits: {auth.credits}
+          </li>,
+          <li key="3">
             <a href="/api/logout">Logout</a>
-          </li>
-        );
+          </li>,
+        ];
     }
   };
 
   return (
     <nav>
       <div className="nav-wrapper">
-        <a href="/" className="left brand-logo">
+        <Link to={auth ? "/surveys" : "/"} className="left brand-logo">
           Emaily
-        </a>
+        </Link>
         <ul className="right">{renderContent()}</ul>
       </div>
     </nav>
