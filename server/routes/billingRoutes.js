@@ -22,8 +22,8 @@ module.exports = (app) => {
         payment_method_types: ["card"],
         mode: "payment",
         line_items: [{ price: price.id, quantity: 1 }],
-        success_url: "http://localhost:3000/surveys",
-        cancel_url: "http://localhost:3000",
+        success_url: "https://emaily-3ue6.onrender.com/surveys",
+        cancel_url: "https://emaily-3ue6.onrender.com",
         metadata: {
           userId: req.user.id, // store user ID in session metadata
         },
