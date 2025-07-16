@@ -11,16 +11,13 @@ const Payments = () => {
     const stripe = await stripePromise;
 
     // Call your backend to create the Checkout Session
-    const response = await fetch(
-      "https://emaily-3ue6.onrender.com/api/create-checkout-session",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({}), // Add any needed payload here
-      }
-    );
+    const response = await fetch("/api/create-checkout-session", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({}), // Add any needed payload here
+    });
 
     const session = await response.json();
     console.log("esta es la session ", session);
