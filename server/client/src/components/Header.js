@@ -1,15 +1,16 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Payments from "./Payments";
-import * as actions from "../actions";
+import { fetchUser } from "../actions";
 
-const Header = ({ fetchUser }) => {
-  useEffect(() => {
-    fetchUser();
-  }, [fetchUser]);
-
+const Header = () => {
+  const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, [dispatch]);
 
   const renderContent = () => {
     switch (auth) {
