@@ -1,23 +1,20 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-// import { useDispatch } from "react-redux"; // If you plan to use Redux
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUser } from "../actions";
 
 const Dashboard = () => {
-  const [user, setUser] = useState(null);
-  // const dispatch = useDispatch(); // Optional if you're using Redux
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
 
   useEffect(() => {
-    axios.get("/api/current_user").then((res) => {
-      setUser(res.data);
-      // dispatch({ type: "FETCH_USER", payload: res.data }); // If using Redux
-    });
-  }, [user]);
+    dispatch(fetchUser());
+  }, [dispatch]);
 
   return (
     <div>
       <h1>Dashboard</h1>
-      {user ? (
-        <p>You have {user.credits} credits</p>
+      {auth ? (
+        <p>You have {auth.credits} credits</p>
       ) : (
         <p>Loading user info...</p>
       )}
