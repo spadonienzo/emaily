@@ -2,8 +2,13 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Payments from "./Payments";
+import * as actions from "../actions";
 
-const Header = () => {
+const Header = ({ fetchUser }) => {
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
+
   const auth = useSelector((state) => state.auth);
 
   const renderContent = () => {

@@ -11,7 +11,7 @@ const Dashboard = () => {
       setUser(res.data);
       // dispatch({ type: "FETCH_USER", payload: res.data }); // If using Redux
     });
-  }, []);
+  }, [user]);
 
   return (
     <div>
