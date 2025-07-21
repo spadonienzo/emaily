@@ -1,9 +1,12 @@
-const mongoose = require("mongoose");
-const keys = require("../config/keys");
-const stripe = require("stripe")(keys.stripeSecretKey);
-const requireLogin = require("../middlewares/requireLogin");
+import mongoose from "mongoose";
+import keys from "../config/keys.js";
+import Stripe from "stripe";
+import requireLogin from "../middlewares/requireLogin.js";
 
-module.exports = (app) => {
+const stripe = new Stripe(keys.stripeSecretKey);
+const User = mongoose.model("users");
+
+export default function billingRoutes(app) {
   app.post("/api/create-checkout-session", requireLogin, async (req, res) => {
     try {
       const product = await stripe.products.create({ name: "Credits Pack" });
@@ -33,4 +36,4 @@ module.exports = (app) => {
         .json({ error: "Failed to create Stripe Checkout session" });
     }
   });
-};
+}

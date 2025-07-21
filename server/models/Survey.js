@@ -1,11 +1,12 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
+import RecipientSchema from "./Recipient.js";
+
 const { Schema } = mongoose;
-const RecipientSchema = require("./Recipient");
 
 const surveySchema = new Schema({
-  title: String,
-  body: String,
-  subject: String,
+  title: { type: String, required: true },
+  body: { type: String, required: true },
+  subject: { type: String, required: true },
   recipients: [RecipientSchema],
   yes: { type: Number, default: 0 },
   no: { type: Number, default: 0 },
@@ -13,4 +14,6 @@ const surveySchema = new Schema({
   dateSent: Date,
   lastResponded: Date,
 });
-mongoose.model("surveys", surveySchema);
+
+// You can export the model directly:
+export default mongoose.model("Survey", surveySchema);

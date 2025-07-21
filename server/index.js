@@ -1,25 +1,37 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const keys = require("./config/keys");
-const cookieSession = require("cookie-session");
-const passport = require("passport");
-const bodyParser = require("body-parser");
-require("./models/User");
-require("./models/Survey");
-require("./services/passport");
+import express from "express";
+import mongoose from "mongoose";
+import cookieSession from "cookie-session";
+import passport from "passport";
+import bodyParser from "body-parser";
+import path from "path";
+import { fileURLToPath } from "url";
+
+import keys from "./config/keys.js";
+import "./models/User.js";
+import "./models/Survey.js";
+import "./services/passport.js";
+
+import authRoutes from "./routes/authRoutes.js";
+import billingRoutes from "./routes/billingRoutes.js";
+import surveyRoutes from "./routes/surveyRoutes.js";
+import webhookHandler from "./routes/webhook.js";
 
 mongoose.connect(keys.mongoURI);
 
 const app = express();
 
-// RAW body parser just for webhook — must come FIRST and ONLY on that route
+// Get __dirname in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// RAW body parser for Stripe webhooks — must come first
 app.post(
   "/api/webhook",
   bodyParser.raw({ type: "application/json" }),
-  require("./routes/webhook")
+  webhookHandler
 );
 
-// Regular JSON body parser for the rest of the app
+// Regular body parser for the rest
 app.use(bodyParser.json());
 
 app.use(
@@ -32,14 +44,14 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-require("./routes/authRoutes")(app);
-require("./routes/billingRoutes")(app);
-require("./routes/surveyRoutes").default(app);
+// Route handlers
+authRoutes(app);
+billingRoutes(app);
+surveyRoutes(app);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 
-  const path = require("path");
   app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });

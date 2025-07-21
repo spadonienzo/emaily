@@ -1,7 +1,10 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
+
 const { Schema } = mongoose;
+
 const recipientSchema = new Schema({
-  email: String,
+  email: { type: String, required: true },
   responded: { type: Boolean, default: false },
 });
-mongoose.model("recipients", recipientSchema);
+
+export default mongoose.model("Recipient", recipientSchema);

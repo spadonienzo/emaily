@@ -1,9 +1,11 @@
-const keys = require("../config/keys");
-const stripe = require("stripe")(keys.stripeSecretKey);
-const mongoose = require("mongoose");
+import keys from "../config/keys.js";
+import Stripe from "stripe";
+import mongoose from "mongoose";
+
+const stripe = new Stripe(keys.stripeSecretKey);
 const User = mongoose.model("users");
 
-module.exports = async (req, res) => {
+const webhookHandler = async (req, res) => {
   const sig = req.headers["stripe-signature"];
   let event;
 
@@ -34,3 +36,5 @@ module.exports = async (req, res) => {
 
   res.send({ received: true });
 };
+
+export default webhookHandler;
