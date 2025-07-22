@@ -23,13 +23,11 @@ export default function surveyRoutes(app) {
       });
 
       const mailer = new Mailer(survey, surveyTemplate(survey));
-      mailer.send();
-      // You might want to save the survey and send mail here, e.g.:
-      // await survey.save();
-      // const mailer = new Mailer(survey, surveyTemplate(survey));
-      // await mailer.send();
-
-      res.status(201).json(survey);
+      await mailer.send();
+      await survey.save();
+      req.user.credits -= 1;
+      const user = await req.user.save();
+      res.send(user);
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
