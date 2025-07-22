@@ -20,7 +20,6 @@ const Payments = () => {
     });
 
     const session = await response.json();
-    console.log("esta es la session ", session);
 
     // Redirect to Stripe Checkout
     const result = await stripe.redirectToCheckout({

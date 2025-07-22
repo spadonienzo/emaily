@@ -1,5 +1,5 @@
-import dev from "./dev.js";
-import prod from "./prod.js";
+import * as dev from "./dev.js";
+import * as prod from "./prod.js";
 
 const config = process.env.NODE_ENV === "production" ? prod : dev;
 

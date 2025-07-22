@@ -1,31 +1,55 @@
-import sendgrid from "@sendgrid/mail";
+import sendgrid from "sendgrid";
 import keys from "../config/keys.js";
 
-sendgrid.setApiKey(keys.sendGridKey);
+const helper = sendgrid.mail;
 
-class Mailer extends sendgrid.Mail {
+class Mailer extends helper.Mail {
   constructor({ subject, recipients }, content) {
     super();
 
-    this.setFrom("no-reply@yourdomain.com");
-    this.setSubject(subject);
-    this.addContent("text/html", content);
-    this.addRecipients(recipients);
+    this.sgApi = sendgrid(keys.sendGridKey);
+    this.from_email = new helper.Email("spadonienzo@gmail.com");
+    this.subject = subject;
+    this.body = new helper.Content("text/html", content);
+    this.recipients = this.formatAddresses(recipients);
+
+    this.addContent(this.body);
+    this.addClickTracking();
+    this.addRecipients();
   }
 
-  addRecipients(recipients) {
-    recipients.forEach(({ email }) => {
-      this.addTo(email);
+  formatAddresses(recipients) {
+    return recipients.map(({ email }) => {
+      return new helper.Email(email);
     });
   }
 
+  addClickTracking() {
+    const trackingSettings = new helper.TrackingSettings();
+    const clickTracking = new helper.ClickTracking(true, true);
+
+    trackingSettings.setClickTracking(clickTracking);
+    this.addTrackingSettings(trackingSettings);
+  }
+
+  addRecipients() {
+    const personalize = new helper.Personalization();
+
+    this.recipients.forEach((recipient) => {
+      personalize.addTo(recipient);
+    });
+    this.addPersonalization(personalize);
+  }
+
   async send() {
-    try {
-      await sendgrid.send(this);
-    } catch (err) {
-      console.error("SendGrid Error:", err);
-      throw err;
-    }
+    const request = this.sgApi.emptyRequest({
+      method: "POST",
+      path: "/v3/mail/send",
+      body: this.toJSON(),
+    });
+
+    const response = await this.sgApi.API(request);
+    return response;
   }
 }
 

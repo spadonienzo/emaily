@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 import requireLogin from "../middlewares/requireLogin.js";
 import requireCredits from "../middlewares/requireCredits.js";
-import Mailer from "../"; // Make sure this import path is correct!
+import Mailer from "../services/Mailer.js";
+import surveyTemplate from "../services/emailTemplates/surveyTemplate.js";
 
 const Survey = mongoose.model("surveys");
 
@@ -21,6 +22,8 @@ export default function surveyRoutes(app) {
         dateSent: Date.now(),
       });
 
+      const mailer = new Mailer(survey, surveyTemplate(survey));
+      mailer.send();
       // You might want to save the survey and send mail here, e.g.:
       // await survey.save();
       // const mailer = new Mailer(survey, surveyTemplate(survey));

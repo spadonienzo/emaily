@@ -7,4 +7,4 @@ const recipientSchema = new Schema({
   responded: { type: Boolean, default: false },
 });
 
-export default mongoose.model("Recipient", recipientSchema);
+export default recipientSchema;
