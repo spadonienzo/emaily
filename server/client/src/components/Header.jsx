@@ -12,8 +12,6 @@ const Header = () => {
     dispatch(fetchUser());
   }, [dispatch]);
 
-  console.log(auth);
-
   const renderContent = () => {
     switch (auth) {
       case null:

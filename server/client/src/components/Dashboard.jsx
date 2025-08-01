@@ -1,23 +1,15 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchUser } from "../actions";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import SurveyList from "./surveys/SurveyList";
 
 const Dashboard = () => {
-  const dispatch = useDispatch();
-  const auth = useSelector((state) => state.auth);
-
-  useEffect(() => {
-    dispatch(fetchUser());
-  }, [dispatch]);
-
   return (
     <div>
-      <h1>Dashboard</h1>
-      {auth ? (
-        <p>You have {auth.credits} credits</p>
-      ) : (
-        <p>Loading user info...</p>
-      )}
+      <SurveyList />
+      <div className="fixed-action-btn">
+        <Link to="/surveys/new" className="btn-floating btn-large red">
+          <i className="material-icons">add</i>
+        </Link>
+      </div>
     </div>
   );
 };

@@ -14,7 +14,7 @@ import "./services/passport.js";
 import authRoutes from "./routes/authRoutes.js";
 import billingRoutes from "./routes/billingRoutes.js";
 import surveyRoutes from "./routes/surveyRoutes.js";
-import webhookHandler from "./routes/webhook.js";
+import stripeHandler from "./routes/stripeRoute.js";
 
 mongoose.connect(keys.mongoURI);
 
@@ -28,7 +28,7 @@ const __dirname = path.dirname(__filename);
 app.post(
   "/api/webhook",
   bodyParser.raw({ type: "application/json" }),
-  webhookHandler
+  stripeHandler
 );
 
 // Regular body parser for the rest
